@@ -1,6 +1,6 @@
 
-LOAD DATA LOCAL INFILE 'C:\\dev\\vmshare\\addresses\\data\\AddressBasePlus_FULL_2014-02-01_001.csv'
-INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
+LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_001.csv'
+REPLACE INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' (
 uprn
 ,@rm_rdprn
@@ -136,8 +136,8 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,alt_language = nullif(@alt_language, '')
  ;
  
-LOAD DATA LOCAL INFILE 'C:\\dev\\vmshare\\addresses\\data\\AddressBasePlus_FULL_2014-02-01_002.csv'
-INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
+LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_002.csv'
+REPLACE INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' (
 uprn
 ,@rm_rdprn
@@ -273,8 +273,8 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,alt_language = nullif(@alt_language, '')
  ;
  
-LOAD DATA LOCAL INFILE 'C:\\dev\\vmshare\\addresses\\data\\AddressBasePlus_FULL_2014-02-01_003.csv'
-INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
+LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_003.csv'
+REPLACE INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' (
 uprn
 ,@rm_rdprn
@@ -410,8 +410,8 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,alt_language = nullif(@alt_language, '')
  ;
  
-LOAD DATA LOCAL INFILE 'C:\\dev\\vmshare\\addresses\\data\\AddressBasePlus_FULL_2014-02-01_004.csv'
-INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
+LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_004.csv'
+REPLACE INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' (
 uprn
 ,@rm_rdprn
@@ -547,8 +547,8 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,alt_language = nullif(@alt_language, '')
  ;
  
-LOAD DATA LOCAL INFILE 'C:\\dev\\vmshare\\addresses\\data\\AddressBasePlus_FULL_2014-02-01_005.csv'
-INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
+LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_005.csv'
+REPLACE INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' (
 uprn
 ,@rm_rdprn
@@ -684,8 +684,8 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,alt_language = nullif(@alt_language, '')
  ;
  
-LOAD DATA LOCAL INFILE 'C:\\dev\\vmshare\\addresses\\data\\AddressBasePlus_FULL_2014-02-01_006.csv'
-INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
+LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_006.csv'
+REPLACE INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' (
 uprn
 ,@rm_rdprn
@@ -821,8 +821,8 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,alt_language = nullif(@alt_language, '')
  ;
  
-LOAD DATA LOCAL INFILE 'C:\\dev\\vmshare\\addresses\\data\\AddressBasePlus_FULL_2014-02-01_007.csv'
-INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
+LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_007.csv'
+REPLACE INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' (
 uprn
 ,@rm_rdprn
@@ -958,8 +958,8 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,alt_language = nullif(@alt_language, '')
  ;
  
-LOAD DATA LOCAL INFILE 'C:\\dev\\vmshare\\addresses\\data\\AddressBasePlus_FULL_2014-02-01_008.csv'
-INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
+LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_008.csv'
+REPLACE INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' (
 uprn
 ,@rm_rdprn
@@ -1095,8 +1095,8 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,alt_language = nullif(@alt_language, '')
  ;
  
-LOAD DATA LOCAL INFILE 'C:\\dev\\vmshare\\addresses\\data\\AddressBasePlus_FULL_2014-02-01_009.csv'
-INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
+LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_009.csv'
+REPLACE INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' (
 uprn
 ,@rm_rdprn
@@ -1232,8 +1232,8 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,alt_language = nullif(@alt_language, '')
  ;
  
-LOAD DATA LOCAL INFILE 'C:\\dev\\vmshare\\addresses\\data\\AddressBasePlus_FULL_2014-02-01_010.csv'
-INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
+LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_010.csv'
+REPLACE INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' (
 uprn
 ,@rm_rdprn
@@ -1369,8 +1369,8 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,alt_language = nullif(@alt_language, '')
  ;
  
-LOAD DATA LOCAL INFILE 'C:\\dev\\vmshare\\addresses\\data\\AddressBasePlus_FULL_2014-02-01_011.csv'
-INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
+LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_011.csv'
+REPLACE INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' (
 uprn
 ,@rm_rdprn
@@ -1506,8 +1506,8 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,alt_language = nullif(@alt_language, '')
  ;
  
-LOAD DATA LOCAL INFILE 'C:\\dev\\vmshare\\addresses\\data\\AddressBasePlus_FULL_2014-02-01_012.csv'
-INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
+LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_012.csv'
+REPLACE INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' (
 uprn
 ,@rm_rdprn
@@ -1643,8 +1643,8 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,alt_language = nullif(@alt_language, '')
  ;
  
-LOAD DATA LOCAL INFILE 'C:\\dev\\vmshare\\addresses\\data\\AddressBasePlus_FULL_2014-02-01_013.csv'
-INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
+LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_013.csv'
+REPLACE INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' (
 uprn
 ,@rm_rdprn
@@ -1780,8 +1780,8 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,alt_language = nullif(@alt_language, '')
  ;
  
-LOAD DATA LOCAL INFILE 'C:\\dev\\vmshare\\addresses\\data\\AddressBasePlus_FULL_2014-02-01_014.csv'
-INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
+LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_014.csv'
+REPLACE INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' (
 uprn
 ,@rm_rdprn
@@ -1917,8 +1917,8 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,alt_language = nullif(@alt_language, '')
  ;
  
-LOAD DATA LOCAL INFILE 'C:\\dev\\vmshare\\addresses\\data\\AddressBasePlus_FULL_2014-02-01_015.csv'
-INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
+LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_015.csv'
+REPLACE INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' (
 uprn
 ,@rm_rdprn
@@ -2054,8 +2054,8 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,alt_language = nullif(@alt_language, '')
  ;
  
-LOAD DATA LOCAL INFILE 'C:\\dev\\vmshare\\addresses\\data\\AddressBasePlus_FULL_2014-02-01_016.csv'
-INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
+LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_016.csv'
+REPLACE INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' (
 uprn
 ,@rm_rdprn
@@ -2191,8 +2191,8 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,alt_language = nullif(@alt_language, '')
  ;
  
-LOAD DATA LOCAL INFILE 'C:\\dev\\vmshare\\addresses\\data\\AddressBasePlus_FULL_2014-02-01_017.csv'
-INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
+LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_017.csv'
+REPLACE INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' (
 uprn
 ,@rm_rdprn
@@ -2328,8 +2328,8 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,alt_language = nullif(@alt_language, '')
  ;
  
-LOAD DATA LOCAL INFILE 'C:\\dev\\vmshare\\addresses\\data\\AddressBasePlus_FULL_2014-02-01_018.csv'
-INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
+LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_018.csv'
+REPLACE INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' (
 uprn
 ,@rm_rdprn
@@ -2465,8 +2465,8 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,alt_language = nullif(@alt_language, '')
  ;
  
-LOAD DATA LOCAL INFILE 'C:\\dev\\vmshare\\addresses\\data\\AddressBasePlus_FULL_2014-02-01_019.csv'
-INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
+LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_019.csv'
+REPLACE INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' (
 uprn
 ,@rm_rdprn
@@ -2602,8 +2602,8 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,alt_language = nullif(@alt_language, '')
  ;
  
-LOAD DATA LOCAL INFILE 'C:\\dev\\vmshare\\addresses\\data\\AddressBasePlus_FULL_2014-02-01_020.csv'
-INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
+LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_020.csv'
+REPLACE INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' (
 uprn
 ,@rm_rdprn
@@ -2739,8 +2739,8 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,alt_language = nullif(@alt_language, '')
  ;
  
-LOAD DATA LOCAL INFILE 'C:\\dev\\vmshare\\addresses\\data\\AddressBasePlus_FULL_2014-02-01_021.csv'
-INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
+LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_021.csv'
+REPLACE INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' (
 uprn
 ,@rm_rdprn
@@ -2876,8 +2876,8 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,alt_language = nullif(@alt_language, '')
  ;
  
-LOAD DATA LOCAL INFILE 'C:\\dev\\vmshare\\addresses\\data\\AddressBasePlus_FULL_2014-02-01_022.csv'
-INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
+LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_022.csv'
+REPLACE INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' (
 uprn
 ,@rm_rdprn
@@ -3013,8 +3013,8 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,alt_language = nullif(@alt_language, '')
  ;
  
-LOAD DATA LOCAL INFILE 'C:\\dev\\vmshare\\addresses\\data\\AddressBasePlus_FULL_2014-02-01_023.csv'
-INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
+LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_023.csv'
+REPLACE INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' (
 uprn
 ,@rm_rdprn
@@ -3150,8 +3150,8 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,alt_language = nullif(@alt_language, '')
  ;
  
-LOAD DATA LOCAL INFILE 'C:\\dev\\vmshare\\addresses\\data\\AddressBasePlus_FULL_2014-02-01_024.csv'
-INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
+LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_024.csv'
+REPLACE INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' (
 uprn
 ,@rm_rdprn
@@ -3287,8 +3287,8 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,alt_language = nullif(@alt_language, '')
  ;
  
-LOAD DATA LOCAL INFILE 'C:\\dev\\vmshare\\addresses\\data\\AddressBasePlus_FULL_2014-02-01_025.csv'
-INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
+LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_025.csv'
+REPLACE INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' (
 uprn
 ,@rm_rdprn
@@ -3424,8 +3424,8 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,alt_language = nullif(@alt_language, '')
  ;
  
-LOAD DATA LOCAL INFILE 'C:\\dev\\vmshare\\addresses\\data\\AddressBasePlus_FULL_2014-02-01_026.csv'
-INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
+LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_026.csv'
+REPLACE INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' (
 uprn
 ,@rm_rdprn
@@ -3561,8 +3561,8 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,alt_language = nullif(@alt_language, '')
  ;
  
-LOAD DATA LOCAL INFILE 'C:\\dev\\vmshare\\addresses\\data\\AddressBasePlus_FULL_2014-02-01_027.csv'
-INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
+LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_027.csv'
+REPLACE INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' (
 uprn
 ,@rm_rdprn
@@ -3698,8 +3698,8 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,alt_language = nullif(@alt_language, '')
  ;
  
-LOAD DATA LOCAL INFILE 'C:\\dev\\vmshare\\addresses\\data\\AddressBasePlus_FULL_2014-02-01_028.csv'
-INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
+LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_028.csv'
+REPLACE INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' (
 uprn
 ,@rm_rdprn
@@ -3835,8 +3835,8 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,alt_language = nullif(@alt_language, '')
  ;
  
-LOAD DATA LOCAL INFILE 'C:\\dev\\vmshare\\addresses\\data\\AddressBasePlus_FULL_2014-02-01_029.csv'
-INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
+LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_029.csv'
+REPLACE INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' (
 uprn
 ,@rm_rdprn
@@ -3972,8 +3972,8 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,alt_language = nullif(@alt_language, '')
  ;
  
-LOAD DATA LOCAL INFILE 'C:\\dev\\vmshare\\addresses\\data\\AddressBasePlus_FULL_2014-02-01_030.csv'
-INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
+LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_030.csv'
+REPLACE INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' (
 uprn
 ,@rm_rdprn
@@ -4109,8 +4109,8 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,alt_language = nullif(@alt_language, '')
  ;
  
-LOAD DATA LOCAL INFILE 'C:\\dev\\vmshare\\addresses\\data\\AddressBasePlus_FULL_2014-02-01_031.csv'
-INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
+LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_031.csv'
+REPLACE INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' (
 uprn
 ,@rm_rdprn
@@ -4246,8 +4246,8 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,alt_language = nullif(@alt_language, '')
  ;
  
-LOAD DATA LOCAL INFILE 'C:\\dev\\vmshare\\addresses\\data\\AddressBasePlus_FULL_2014-02-01_032.csv'
-INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
+LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_032.csv'
+REPLACE INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' (
 uprn
 ,@rm_rdprn
@@ -4383,8 +4383,8 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,alt_language = nullif(@alt_language, '')
  ;
  
-LOAD DATA LOCAL INFILE 'C:\\dev\\vmshare\\addresses\\data\\AddressBasePlus_FULL_2014-02-01_033.csv'
-INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
+LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_033.csv'
+REPLACE INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' (
 uprn
 ,@rm_rdprn
@@ -4520,8 +4520,8 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,alt_language = nullif(@alt_language, '')
  ;
  
-LOAD DATA LOCAL INFILE 'C:\\dev\\vmshare\\addresses\\data\\AddressBasePlus_FULL_2014-02-01_034.csv'
-INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
+LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_034.csv'
+REPLACE INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' (
 uprn
 ,@rm_rdprn
@@ -4657,8 +4657,8 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,alt_language = nullif(@alt_language, '')
  ;
  
-LOAD DATA LOCAL INFILE 'C:\\dev\\vmshare\\addresses\\data\\AddressBasePlus_FULL_2014-02-01_035.csv'
-INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
+LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_035.csv'
+REPLACE INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
 OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' (
 uprn
 ,@rm_rdprn
