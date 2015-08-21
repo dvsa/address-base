@@ -134,6 +134,7 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,voa_ndr_p_desc_code = nullif(@voa_ndr_p_desc_code, '')
 ,voa_ndr_scat_code = nullif(@voa_ndr_scat_code, '')
 ,alt_language = nullif(@alt_language, '')
+,postcode_trim = nullif(REPLACE(@postcode, ' ', ''), '')
  ;
  
 LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_002.csv'
@@ -271,6 +272,7 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,voa_ndr_p_desc_code = nullif(@voa_ndr_p_desc_code, '')
 ,voa_ndr_scat_code = nullif(@voa_ndr_scat_code, '')
 ,alt_language = nullif(@alt_language, '')
+,postcode_trim = nullif(REPLACE(@postcode, ' ', ''), '')
  ;
  
 LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_003.csv'
@@ -408,6 +410,7 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,voa_ndr_p_desc_code = nullif(@voa_ndr_p_desc_code, '')
 ,voa_ndr_scat_code = nullif(@voa_ndr_scat_code, '')
 ,alt_language = nullif(@alt_language, '')
+,postcode_trim = nullif(REPLACE(@postcode, ' ', ''), '')
  ;
  
 LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_004.csv'
@@ -545,6 +548,7 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,voa_ndr_p_desc_code = nullif(@voa_ndr_p_desc_code, '')
 ,voa_ndr_scat_code = nullif(@voa_ndr_scat_code, '')
 ,alt_language = nullif(@alt_language, '')
+,postcode_trim = nullif(REPLACE(@postcode, ' ', ''), '')
  ;
  
 LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_005.csv'
@@ -682,6 +686,7 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,voa_ndr_p_desc_code = nullif(@voa_ndr_p_desc_code, '')
 ,voa_ndr_scat_code = nullif(@voa_ndr_scat_code, '')
 ,alt_language = nullif(@alt_language, '')
+,postcode_trim = nullif(REPLACE(@postcode, ' ', ''), '')
  ;
  
 LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_006.csv'
@@ -819,6 +824,7 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,voa_ndr_p_desc_code = nullif(@voa_ndr_p_desc_code, '')
 ,voa_ndr_scat_code = nullif(@voa_ndr_scat_code, '')
 ,alt_language = nullif(@alt_language, '')
+,postcode_trim = nullif(REPLACE(@postcode, ' ', ''), '')
  ;
  
 LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_007.csv'
@@ -956,6 +962,7 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,voa_ndr_p_desc_code = nullif(@voa_ndr_p_desc_code, '')
 ,voa_ndr_scat_code = nullif(@voa_ndr_scat_code, '')
 ,alt_language = nullif(@alt_language, '')
+,postcode_trim = nullif(REPLACE(@postcode, ' ', ''), '')
  ;
  
 LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_008.csv'
@@ -1093,6 +1100,7 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,voa_ndr_p_desc_code = nullif(@voa_ndr_p_desc_code, '')
 ,voa_ndr_scat_code = nullif(@voa_ndr_scat_code, '')
 ,alt_language = nullif(@alt_language, '')
+,postcode_trim = nullif(REPLACE(@postcode, ' ', ''), '')
  ;
  
 LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_009.csv'
@@ -1230,6 +1238,7 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,voa_ndr_p_desc_code = nullif(@voa_ndr_p_desc_code, '')
 ,voa_ndr_scat_code = nullif(@voa_ndr_scat_code, '')
 ,alt_language = nullif(@alt_language, '')
+,postcode_trim = nullif(REPLACE(@postcode, ' ', ''), '')
  ;
  
 LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_010.csv'
@@ -1367,6 +1376,7 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,voa_ndr_p_desc_code = nullif(@voa_ndr_p_desc_code, '')
 ,voa_ndr_scat_code = nullif(@voa_ndr_scat_code, '')
 ,alt_language = nullif(@alt_language, '')
+,postcode_trim = nullif(REPLACE(@postcode, ' ', ''), '')
  ;
  
 LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_011.csv'
@@ -1504,6 +1514,7 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,voa_ndr_p_desc_code = nullif(@voa_ndr_p_desc_code, '')
 ,voa_ndr_scat_code = nullif(@voa_ndr_scat_code, '')
 ,alt_language = nullif(@alt_language, '')
+,postcode_trim = nullif(REPLACE(@postcode, ' ', ''), '')
  ;
  
 LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_012.csv'
@@ -1641,6 +1652,7 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,voa_ndr_p_desc_code = nullif(@voa_ndr_p_desc_code, '')
 ,voa_ndr_scat_code = nullif(@voa_ndr_scat_code, '')
 ,alt_language = nullif(@alt_language, '')
+,postcode_trim = nullif(REPLACE(@postcode, ' ', ''), '')
  ;
  
 LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_013.csv'
@@ -1778,6 +1790,7 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,voa_ndr_p_desc_code = nullif(@voa_ndr_p_desc_code, '')
 ,voa_ndr_scat_code = nullif(@voa_ndr_scat_code, '')
 ,alt_language = nullif(@alt_language, '')
+,postcode_trim = nullif(REPLACE(@postcode, ' ', ''), '')
  ;
  
 LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_014.csv'
@@ -1915,6 +1928,7 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,voa_ndr_p_desc_code = nullif(@voa_ndr_p_desc_code, '')
 ,voa_ndr_scat_code = nullif(@voa_ndr_scat_code, '')
 ,alt_language = nullif(@alt_language, '')
+,postcode_trim = nullif(REPLACE(@postcode, ' ', ''), '')
  ;
  
 LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_015.csv'
@@ -2052,6 +2066,7 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,voa_ndr_p_desc_code = nullif(@voa_ndr_p_desc_code, '')
 ,voa_ndr_scat_code = nullif(@voa_ndr_scat_code, '')
 ,alt_language = nullif(@alt_language, '')
+,postcode_trim = nullif(REPLACE(@postcode, ' ', ''), '')
  ;
  
 LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_016.csv'
@@ -2189,6 +2204,7 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,voa_ndr_p_desc_code = nullif(@voa_ndr_p_desc_code, '')
 ,voa_ndr_scat_code = nullif(@voa_ndr_scat_code, '')
 ,alt_language = nullif(@alt_language, '')
+,postcode_trim = nullif(REPLACE(@postcode, ' ', ''), '')
  ;
  
 LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_017.csv'
@@ -2326,6 +2342,7 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,voa_ndr_p_desc_code = nullif(@voa_ndr_p_desc_code, '')
 ,voa_ndr_scat_code = nullif(@voa_ndr_scat_code, '')
 ,alt_language = nullif(@alt_language, '')
+,postcode_trim = nullif(REPLACE(@postcode, ' ', ''), '')
  ;
  
 LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_018.csv'
@@ -2463,6 +2480,7 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,voa_ndr_p_desc_code = nullif(@voa_ndr_p_desc_code, '')
 ,voa_ndr_scat_code = nullif(@voa_ndr_scat_code, '')
 ,alt_language = nullif(@alt_language, '')
+,postcode_trim = nullif(REPLACE(@postcode, ' ', ''), '')
  ;
  
 LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_019.csv'
@@ -2600,6 +2618,7 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,voa_ndr_p_desc_code = nullif(@voa_ndr_p_desc_code, '')
 ,voa_ndr_scat_code = nullif(@voa_ndr_scat_code, '')
 ,alt_language = nullif(@alt_language, '')
+,postcode_trim = nullif(REPLACE(@postcode, ' ', ''), '')
  ;
  
 LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_020.csv'
@@ -2737,6 +2756,7 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,voa_ndr_p_desc_code = nullif(@voa_ndr_p_desc_code, '')
 ,voa_ndr_scat_code = nullif(@voa_ndr_scat_code, '')
 ,alt_language = nullif(@alt_language, '')
+,postcode_trim = nullif(REPLACE(@postcode, ' ', ''), '')
  ;
  
 LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_021.csv'
@@ -2874,6 +2894,7 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,voa_ndr_p_desc_code = nullif(@voa_ndr_p_desc_code, '')
 ,voa_ndr_scat_code = nullif(@voa_ndr_scat_code, '')
 ,alt_language = nullif(@alt_language, '')
+,postcode_trim = nullif(REPLACE(@postcode, ' ', ''), '')
  ;
  
 LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_022.csv'
@@ -3011,6 +3032,7 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,voa_ndr_p_desc_code = nullif(@voa_ndr_p_desc_code, '')
 ,voa_ndr_scat_code = nullif(@voa_ndr_scat_code, '')
 ,alt_language = nullif(@alt_language, '')
+,postcode_trim = nullif(REPLACE(@postcode, ' ', ''), '')
  ;
  
 LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_023.csv'
@@ -3148,6 +3170,7 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,voa_ndr_p_desc_code = nullif(@voa_ndr_p_desc_code, '')
 ,voa_ndr_scat_code = nullif(@voa_ndr_scat_code, '')
 ,alt_language = nullif(@alt_language, '')
+,postcode_trim = nullif(REPLACE(@postcode, ' ', ''), '')
  ;
  
 LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_024.csv'
@@ -3285,6 +3308,7 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,voa_ndr_p_desc_code = nullif(@voa_ndr_p_desc_code, '')
 ,voa_ndr_scat_code = nullif(@voa_ndr_scat_code, '')
 ,alt_language = nullif(@alt_language, '')
+,postcode_trim = nullif(REPLACE(@postcode, ' ', ''), '')
  ;
  
 LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_025.csv'
@@ -3422,6 +3446,7 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,voa_ndr_p_desc_code = nullif(@voa_ndr_p_desc_code, '')
 ,voa_ndr_scat_code = nullif(@voa_ndr_scat_code, '')
 ,alt_language = nullif(@alt_language, '')
+,postcode_trim = nullif(REPLACE(@postcode, ' ', ''), '')
  ;
  
 LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_026.csv'
@@ -3559,6 +3584,7 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,voa_ndr_p_desc_code = nullif(@voa_ndr_p_desc_code, '')
 ,voa_ndr_scat_code = nullif(@voa_ndr_scat_code, '')
 ,alt_language = nullif(@alt_language, '')
+,postcode_trim = nullif(REPLACE(@postcode, ' ', ''), '')
  ;
  
 LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_027.csv'
@@ -3696,6 +3722,7 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,voa_ndr_p_desc_code = nullif(@voa_ndr_p_desc_code, '')
 ,voa_ndr_scat_code = nullif(@voa_ndr_scat_code, '')
 ,alt_language = nullif(@alt_language, '')
+,postcode_trim = nullif(REPLACE(@postcode, ' ', ''), '')
  ;
  
 LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_028.csv'
@@ -3833,6 +3860,7 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,voa_ndr_p_desc_code = nullif(@voa_ndr_p_desc_code, '')
 ,voa_ndr_scat_code = nullif(@voa_ndr_scat_code, '')
 ,alt_language = nullif(@alt_language, '')
+,postcode_trim = nullif(REPLACE(@postcode, ' ', ''), '')
  ;
  
 LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_029.csv'
@@ -3970,6 +3998,7 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,voa_ndr_p_desc_code = nullif(@voa_ndr_p_desc_code, '')
 ,voa_ndr_scat_code = nullif(@voa_ndr_scat_code, '')
 ,alt_language = nullif(@alt_language, '')
+,postcode_trim = nullif(REPLACE(@postcode, ' ', ''), '')
  ;
  
 LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_030.csv'
@@ -4107,6 +4136,7 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,voa_ndr_p_desc_code = nullif(@voa_ndr_p_desc_code, '')
 ,voa_ndr_scat_code = nullif(@voa_ndr_scat_code, '')
 ,alt_language = nullif(@alt_language, '')
+,postcode_trim = nullif(REPLACE(@postcode, ' ', ''), '')
  ;
  
 LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_031.csv'
@@ -4244,6 +4274,7 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,voa_ndr_p_desc_code = nullif(@voa_ndr_p_desc_code, '')
 ,voa_ndr_scat_code = nullif(@voa_ndr_scat_code, '')
 ,alt_language = nullif(@alt_language, '')
+,postcode_trim = nullif(REPLACE(@postcode, ' ', ''), '')
  ;
  
 LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_032.csv'
@@ -4381,6 +4412,7 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,voa_ndr_p_desc_code = nullif(@voa_ndr_p_desc_code, '')
 ,voa_ndr_scat_code = nullif(@voa_ndr_scat_code, '')
 ,alt_language = nullif(@alt_language, '')
+,postcode_trim = nullif(REPLACE(@postcode, ' ', ''), '')
  ;
  
 LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_033.csv'
@@ -4518,6 +4550,7 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,voa_ndr_p_desc_code = nullif(@voa_ndr_p_desc_code, '')
 ,voa_ndr_scat_code = nullif(@voa_ndr_scat_code, '')
 ,alt_language = nullif(@alt_language, '')
+,postcode_trim = nullif(REPLACE(@postcode, ' ', ''), '')
  ;
  
 LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_034.csv'
@@ -4655,6 +4688,7 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,voa_ndr_p_desc_code = nullif(@voa_ndr_p_desc_code, '')
 ,voa_ndr_scat_code = nullif(@voa_ndr_scat_code, '')
 ,alt_language = nullif(@alt_language, '')
+,postcode_trim = nullif(REPLACE(@postcode, ' ', ''), '')
  ;
  
 LOAD DATA LOCAL INFILE 'AddressBasePlus_FULL_2014-02-01_035.csv'
@@ -4792,5 +4826,6 @@ rm_rdprn = nullif(@rm_rdprn, '')
 ,voa_ndr_p_desc_code = nullif(@voa_ndr_p_desc_code, '')
 ,voa_ndr_scat_code = nullif(@voa_ndr_scat_code, '')
 ,alt_language = nullif(@alt_language, '')
+,postcode_trim = nullif(REPLACE(@postcode, ' ', ''), '')
  ;
  

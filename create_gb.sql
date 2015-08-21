@@ -72,6 +72,8 @@ CREATE TABLE addressbase.`address_gb` (
   `voa_ndr_p_desc_code` char(5) DEFAULT NULL,
   `voa_ndr_scat_code` char(4) DEFAULT NULL,
   `alt_language` char(3) DEFAULT NULL,
+  `postcode_trim` char(7) DEFAULT NULL,
   PRIMARY KEY address_gb_pk (uprn),
-  KEY `address_uk_postcode_idx` (`postcode`)
+  KEY `address_uk_postcode_idx` (`postcode`),
+  KEY `address_uk_postcode_trim_idx` (`postcode_trim`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
