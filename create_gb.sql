@@ -1,79 +1,84 @@
 DROP TABLE IF EXISTS addressbase.address_gb;
 CREATE TABLE addressbase.`address_gb` (
-  `uprn` bigint(20) NOT NULL,
-  `rm_rdprn` int(11) DEFAULT NULL,
-  `change_type` char(1) NOT NULL,
-  `state` tinyint(4) DEFAULT NULL,
-  `state_date` date DEFAULT NULL,
-  `class` char(6) NOT NULL,
-  `parent_uprn` bigint(20) DEFAULT NULL,
-  `x_coordinate` decimal(8,2) NOT NULL,
-  `y_coordinate` decimal(9,2) NOT NULL,
-  `rpc` tinyint(4) NOT NULL,
-  `local_custodian_code` smallint(6) NOT NULL,
-  `start_date` date NOT NULL,
-  `end_date` date DEFAULT NULL,
-  `last_update_date` date NOT NULL,
-  `entry_date` date NOT NULL,
-  `organisation_name` char(60) DEFAULT NULL,
-  `organisation` char(100) DEFAULT NULL,
-  `department_name` char(60) DEFAULT NULL,
-  `scottish_department_name` char(60) DEFAULT NULL,
-  `building_name` char(50) DEFAULT NULL,
-  `sub_building_name` char(30) DEFAULT NULL,
-  `sao_start_number` smallint(6) DEFAULT NULL,
-  `sao_start_prefix` char(2) DEFAULT NULL,
-  `sao_end_number` smallint(6) DEFAULT NULL,
-  `sao_end_suffix` char(2) DEFAULT NULL,
-  `sao_text` char(90) DEFAULT NULL,
-  `alt_language_sao_text` char(90) DEFAULT NULL,
-  `pao_start_number` smallint(6) DEFAULT NULL,
-  `pao_start_prefix` char(2) DEFAULT NULL,
-  `pao_end_number` smallint(6) DEFAULT NULL,
-  `pao_end_suffix` char(2) DEFAULT NULL,
-  `pao_text` char(90) DEFAULT NULL,
-  `alt_language_pao_text` char(90) DEFAULT NULL,
-  `usrn` int(11) NOT NULL,
-  `usrn_match_indicator` tinyint(4) NOT NULL,
-  `area_name` char(35) DEFAULT NULL,
-  `level` char(30) DEFAULT NULL,
-  `official_flag` char(1) DEFAULT NULL,
-  `os_address_toid` char(20) DEFAULT NULL,
-  `os_address_toid_version` smallint(6) DEFAULT NULL,
-  `os_roadlink_toid` char(20) DEFAULT NULL,
-  `os_roadlink_toid_version` smallint(6) DEFAULT NULL,
-  `os_topo_toid` char(20) DEFAULT NULL,
-  `os_topo_toid_version` smallint(6) DEFAULT NULL,
-  `voa_ct_record` bigint(20) DEFAULT NULL,
-  `voa_ndr_record` bigint(20) DEFAULT NULL,
-  `street_description` char(100) NOT NULL,
-  `alt_language_street_description` char(100) DEFAULT NULL,
-  `dependent_thoroughfare_name` char(80) DEFAULT NULL,
-  `thoroughfare_name` char(80) DEFAULT NULL,
-  `welsh_dependent_thoroughfare_name` char(80) DEFAULT NULL,
-  `welsh_thoroughfare_name` char(80) DEFAULT NULL,
-  `double_dependent_locality` char(35) DEFAULT NULL,
-  `dependent_locality` char(35) DEFAULT NULL,
-  `locality_name` char(35) DEFAULT NULL,
-  `welsh_dependent_locality` char(35) DEFAULT NULL,
-  `welsh_double_dependent_locality` char(35) DEFAULT NULL,
-  `town_name` char(30) DEFAULT NULL,
-  `administritive_area` char(30) NOT NULL,
-  `post_town` char(35) DEFAULT NULL,
-  `postcode` char(8) DEFAULT NULL,
-  `postcode_locator` char(8) DEFAULT NULL,
-  `postcode_type` char(1) DEFAULT NULL,
-  `postal_address` char(1) DEFAULT NULL,
-  `po_box_number` char(6) DEFAULT NULL,
-  `ward_code` char(9) DEFAULT NULL,
-  `parish_code` char(9) DEFAULT NULL,
-  `process_date` date DEFAULT NULL,
-  `multi_occ_count` smallint(6) DEFAULT NULL,
-  `voa_ndr_p_desc_code` char(5) DEFAULT NULL,
-  `voa_ndr_scat_code` char(4) DEFAULT NULL,
-  `alt_language` char(3) DEFAULT NULL,
-  `postcode_trim` char(7) DEFAULT NULL,
-  PRIMARY KEY address_gb_pk (uprn),
-  KEY `address_uk_postcode_idx` (`postcode`),
-  KEY `address_uk_postcode_trim_idx` (`postcode_trim`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `uprn`                 BIGINT UNSIGNED NOT NULL       COMMENT 'Unique Property Reference No assigned by LLPG or OS'
+ ,`udprn`                INT UNSIGNED DEFAULT NULL      COMMENT 'Royal Mail’s Unique Delivery Point Reference Number'
+ ,`change_type`          VARCHAR(1) NOT NULL               COMMENT 'Type of Record Change'
+ ,`state`                TINYINT DEFAULT NULL           COMMENT 'A code identifying the current state of the property'
+ ,`state_date`           DATE DEFAULT NULL              COMMENT 'Date on which the property achieved its state'
+ ,`class`                VARCHAR(6) NOT NULL               COMMENT 'Classification of the address record'
+ ,`parent_uprn`          BIGINT UNSIGNED DEFAULT NULL   COMMENT 'UPRN of the parent record if a parent child exists'
+ ,`x_coordinate`         DECIMAL(8,2) NOT NULL          COMMENT 'Metres defining x location in British National Grid'
+ ,`y_coordinate`         DECIMAL(9,2) NOT NULL          COMMENT 'Metres defining y location in British National Grid'
+ ,`latitude`             DECIMAL(9,7) NOT NULL          COMMENT 'Latitude location in accordance with ETRS89'
+ ,`longitude`            DECIMAL(8,7) NOT NULL          COMMENT 'Longitude location in accordance with ETRS89'
+ ,`rpc`                  TINYINT UNSIGNED NOT NULL      COMMENT 'Representative Point Code. Reflects positional accuracy'
+ ,`local_custodian_code` SMALLINT UNSIGNED NOT NULL     COMMENT 'Unique identifier of the LLPG Custodian'
+ ,`country`              VARCHAR(1) NOT NULL               COMMENT 'E,w,s,n,l,m,j?'
+ ,`la_start_date`           DATE NOT NULL                  COMMENT 'Addressbase insert date'
+ ,`last_update_date`     DATE NOT NULL                  COMMENT 'Addressbase update date'
+ ,`entry_date`           DATE NOT NULL                  COMMENT 'Local Authority database insert date'
+ ,`organisation_name`    VARCHAR(60) DEFAULT NULL          COMMENT 'business name given to a delivery point within a building'
+ ,`la_organisation`      VARCHAR(100) DEFAULT NULL         COMMENT 'Name of current occupier as provided by the LA Custodian'
+ ,`department_name`      VARCHAR(60) DEFAULT NULL          COMMENT 'e.g. Marketing'
+ ,`legal_name`           VARCHAR(60) DEFAULT NULL          COMMENT 'Registered legal name of the organisation'
+ ,`sub_building_name`    VARCHAR(30) DEFAULT NULL          COMMENT 'e.g. FLAT 3 '
+ ,`building_name`        VARCHAR(50) DEFAULT NULL          COMMENT 'e.g. Hillcrest House'
+ ,`sao_start_number`     SMALLINT UNSIGNED DEFAULT NULL COMMENT 'No of the secondary addressable obj, or the start of range'
+ ,`sao_start_prefix`     VARCHAR(2) DEFAULT NULL           COMMENT 'The suffix to the SAO_START_NUMBER'
+ ,`sao_end_number`       SMALLINT UNSIGNED DEFAULT NULL COMMENT 'End number range for the SAO where SAO_START_NUMBER not null'
+ ,`sao_end_suffix`       VARCHAR(2) DEFAULT NULL           COMMENT 'Suffix for end number'
+ ,`sao_text`             VARCHAR(90) DEFAULT NULL          COMMENT 'Describes the SAO, such as Maisonette'
+ ,`alt_language_sao_text` VARCHAR(90) DEFAULT NULL         COMMENT 'Describes the SAO, such as Maisonette in specified language'
+ ,`pao_start_number`     SMALLINT(6) DEFAULT NULL       COMMENT 'No of the primary addressable obj, or the start of range'
+ ,`pao_start_prefix`     VARCHAR(2) DEFAULT NULL           COMMENT 'The suffix to the PAO_START_NUMBER'
+ ,`pao_end_number`       SMALLINT(6) DEFAULT NULL       COMMENT 'End number range for the SAO where PAO_START_NUMBER not null'
+ ,`pao_end_suffix`       VARCHAR(2) DEFAULT NULL           COMMENT 'Suffix for end number'
+ ,`pao_text`             VARCHAR(90) DEFAULT NULL          COMMENT 'Describes the SAO, such as Maisonette'
+ ,`alt_language_pao_text` VARCHAR(90) DEFAULT NULL         COMMENT 'Describes the SAO, such as Maisonette in specified language'
+ ,`usrn`                 INT UNSIGNED NOT NULL          COMMENT 'Unique Street Reference Number'
+ ,`usrn_match_indicator` TINYINT UNSIGNED NOT NULL      COMMENT 'Match Method. 1 manual, s spacial'
+ ,`area_name`            VARCHAR(40) DEFAULT NULL          COMMENT '3rd level of area e.g. Croft'
+ ,`level`                VARCHAR(30) DEFAULT NULL          COMMENT 'Memorandum of the vertical position of the property.'
+ ,`official_flag`        VARCHAR(1) DEFAULT NULL           COMMENT 'Status of the address'
+ ,`os_address_toid`      VARCHAR(20) DEFAULT NULL          COMMENT 'OS uid'
+ ,`os_address_toid_version` SMALLINT UNSIGNED DEFAULT NULL COMMENT 'Version of OS address'
+ ,`os_roadlink_toid`     VARCHAR(20) DEFAULT NULL          COMMENT 'The OS MasterMap Integrated Transport Network™ (ITN) road link'
+ ,`os_roadlink_toid_version` SMALLINT UNSIGNED DEFAULT NULL COMMENT 'Roadlink version'
+ ,`os_topo_toid`         VARCHAR(20) DEFAULT NULL         COMMENT 'The OS MasterMap Topography Layer TOID.'
+ ,`os_topo_toid_version` SMALLINT UNSIGNED DEFAULT NULL COMMENT 'Topography version'
+ ,`voa_ct_record`        BIGINT UNSIGNED DEFAULT NULL   COMMENT 'Unique VOA council tax reference'
+ ,`voa_ndr_record`       BIGINT UNSIGNED DEFAULT NULL   COMMENT 'Unique VOA non domestic rate ref'
+ ,`street_description`   VARCHAR(100) NOT NULL             COMMENT 'Local Land and Property Gazetteer (LLPG) street name'
+ ,`alt_language_street_description` VARCHAR(100) DEFAULT NULL COMMENT 'street description in records specified language'
+ ,`dependent_thoroughfare` VARCHAR(80) DEFAULT NULL        COMMENT 'e.g. KINGS PARADE, HIGH STREET and QUEENS PARADE, HIGH STREET'
+ ,`thoroughfare`         VARCHAR(80) DEFAULT NULL          COMMENT 'e.g. HIGH STREET'
+ ,`welsh_dependent_thoroughfare` VARCHAR(80) DEFAULT NULL  COMMENT 'The Welsh translation of DEPENDENT_THOROUGHFARE'
+ ,`welsh_thoroughfare`   VARCHAR(80) DEFAULT NULL          COMMENT 'The Welsh translation of THOROUGHFARE'
+ ,`double_dependent_locality` VARCHAR(35) DEFAULT NULL     COMMENT 'Distinguishes similar thoroghfares in same locality'
+ ,`dependent_locality`   VARCHAR(35) DEFAULT NULL          COMMENT 'An area within a post town'
+ ,`locality_name`             VARCHAR(35) DEFAULT NULL          COMMENT 'An area within a hamlet, town or village'
+ ,`welsh_dependent_locality` VARCHAR(35) DEFAULT NULL      COMMENT 'Welsh translation of dependent locality'
+ ,`welsh_double_dependent_locality` VARCHAR(35) DEFAULT NULL COMMENT 'Welsh translation of double dependent locality'
+ ,`town_name`            VARCHAR(30) DEFAULT NULL          COMMENT 'Town name'
+ ,`administritive_area`  VARCHAR(30) NOT NULL              COMMENT 'Local Highway Authority name'
+ ,`post_town`            VARCHAR(35) DEFAULT NULL          COMMENT 'Royal Mail sorting office servicing record'
+ ,`welsh_post_town`      VARCHAR(35) DEFAULT NULL          COMMENT 'Welsh translation of post town'
+ ,`postcode`             VARCHAR(8) DEFAULT NULL           COMMENT 'Postcode with separator space'
+ ,`postcode_locator`     VARCHAR(8) DEFAULT NULL           COMMENT 'PAF postcode if sourced from Royal Mail'
+ ,`postcode_type`        VARCHAR(1) DEFAULT NULL           COMMENT 'Desc the address as a small or large user as defined by RM'
+ ,`delivery_point_suffix` VARCHAR(2) DEFAULT NULL          COMMENT 'uid of individual delivery point within a postcode'
+ ,`addressbase_postal`    VARCHAR(1) DEFAULT NULL
+ ,`po_box_number`        VARCHAR(6) DEFAULT NULL
+ ,`ward_code`            VARCHAR(9) DEFAULT NULL           COMMENT 'The ONS GSS code of the electoral ward'
+ ,`parish_code`          VARCHAR(9) DEFAULT NULL           COMMENT 'The ONS GSS code of the parish, town or community'
+ ,`rm_start_date`        DATE DEFAULT NULL              COMMENT 'Date on which the Royal Mail address was loaded'
+ ,`multi_occ_count`      SMALLINT UNSIGNED DEFAULT NULL COMMENT 'Count of child upns'
+ ,`voa_ndr_p_desc_code`  VARCHAR(5) DEFAULT NULL           COMMENT 'non domestic rates category'
+ ,`voa_ndr_scat_code`    VARCHAR(4) DEFAULT NULL           COMMENT 'non domestic rates special cat code'
+ ,`alt_language`         VARCHAR(3) DEFAULT NULL           COMMENT 'Alt language for fields using one'
+ ,`postcode_trim`        VARCHAR(7) DEFAULT NULL           COMMENT 'Postcode with no whitespace for searching'
+ 
+ ,PRIMARY KEY address_gb_pk (uprn)
+ ,KEY `ix_address_gb_postcode_trim` (`postcode_trim`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8
+;
