@@ -23,6 +23,7 @@ CREATE TABLE addressbase.`address_gb` (
  ,`legal_name`           VARCHAR(60) DEFAULT NULL          COMMENT 'Registered legal name of the organisation'
  ,`sub_building_name`    VARCHAR(30) DEFAULT NULL          COMMENT 'e.g. FLAT 3 '
  ,`building_name`        VARCHAR(50) DEFAULT NULL          COMMENT 'e.g. Hillcrest House'
+ ,`building_number`      INT UNSIGNED DEFAULT NULL         COMMENT 'building number if numeric'
  ,`sao_start_number`     SMALLINT UNSIGNED DEFAULT NULL COMMENT 'No of the secondary addressable obj, or the start of range'
  ,`sao_start_prefix`     VARCHAR(2) DEFAULT NULL           COMMENT 'The suffix to the SAO_START_NUMBER'
  ,`sao_end_number`       SMALLINT UNSIGNED DEFAULT NULL COMMENT 'End number range for the SAO where SAO_START_NUMBER not null'
