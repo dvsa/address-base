@@ -34,3 +34,179 @@ CREATE TABLE `address_ni` (
 ,KEY `ix_address_ni_postcode_trim` (`postcode_trim`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8
 ;
+
+
+CREATE OR REPLACE VIEW ni_readable_vw AS
+SELECT
+CASE 
+-- 1 Based on org name           
+WHEN organisation_name IS NOT NULL AND building_name is null AND sub_building_name is null and building_number is null 		
+	THEN organisation_name
+-- 2a building number only + secondary_thorfare
+WHEN building_number is not null AND building_name is null and sub_building_name is null and secondary_thorfare is not null
+    THEN concat(building_number, ' ', secondary_thorfare)
+-- 2b building number only + primary_thorfare     
+WHEN building_number is not null AND building_name is null and sub_building_name is null and primary_thorfare is not null
+    THEN concat(building_number, ' ', primary_thorfare)
+-- 2c building number only + locality and/or dependent locality
+WHEN building_number is not null AND building_name is null and sub_building_name is null 
+    THEN concat(building_number, ' ', locality)
+-- 3a building name only + exception rule 
+WHEN sub_building_name is null and building_number is null and (length(building_name) = 1 OR building_name regexp '^[0-9]((.*)?[0-9])?([a-zA-Z])?$') 	
+	THEN concat(building_name,' ',coalesce(secondary_thorfare, primary_thorfare, locality))
+-- 3b building name only, no exception rule
+WHEN sub_building_name is null and building_number is null and building_name is not null	
+	THEN building_name
+-- 4 Both building name and number
+WHEN building_number is not null and building_name is not null and sub_building_name is null	
+	THEN building_name
+-- 5 Both sub_building_name and building number (very similar to 4, only line 1 differs)
+WHEN sub_building_name is not null AND building_number is not null and building_name is null 	
+	THEN sub_building_name
+-- 6a sub building and building name, no number - sub_building name matches exception criteria
+WHEN sub_building_name is not null and building_name is not null and building_number is null AND (length(sub_building_name) = 1 OR sub_building_name regexp '^[0-9]((.*)?[0-9])?([a-zA-Z])?$')		
+	THEN concat(sub_building_name, ' ', building_name)
+-- 6b sub building and building name, no number 
+WHEN sub_building_name is not null and building_name is not null and building_number is null 	
+    THEN sub_building_name
+-- 7a building name + sub building name (meets exception rule) + building number
+WHEN sub_building_name is not null and building_name is not null and building_number is not null AND (length(sub_building_name) = 1 OR sub_building_name regexp '^[0-9]((.*)?[0-9])?([a-zA-Z])?$')
+	THEN concat(sub_building_name, ' ', building_name)
+-- 7b building name + sub building name + building number
+WHEN sub_building_name is not null and building_name is not null and building_number is not null
+	THEN sub_building_name
+END address_line1,
+CASE 
+-- 1 Based on org name           
+WHEN organisation_name IS NOT NULL AND building_name is null AND sub_building_name is null and building_number is null 		
+	THEN coalesce(secondary_thorfare, primary_thorfare, locality)
+-- 2a building number only + secondary_thorfare
+WHEN building_number is not null AND building_name is null and sub_building_name is null and secondary_thorfare is not null
+    THEN primary_thorfare
+-- 2b building number only + primary_thorfare     
+WHEN building_number is not null AND building_name is null and sub_building_name is null and primary_thorfare is not null
+    THEN locality
+-- 2c building number only + locality and/or dependent locality
+WHEN building_number is not null AND building_name is null and sub_building_name is null 
+    THEN null
+-- 3a building name only + exception rule 
+WHEN sub_building_name is null and building_number is null and (length(building_name) = 1 OR building_name regexp '^[0-9]((.*)?[0-9])?([a-zA-Z])?$') 	
+	THEN CASE 	WHEN secondary_thorfare IS NOT NULL THEN primary_thorfare 
+							WHEN primary_thorfare IS NOT NULL THEN locality END
+-- 3b building name only, no exception rule
+WHEN sub_building_name is null and building_number is null and building_name is not null	
+	THEN coalesce(secondary_thorfare, primary_thorfare, locality)
+-- 4 Both building name and number
+WHEN building_number is not null and building_name is not null and sub_building_name is null	
+	THEN concat(building_number, ' ', coalesce(secondary_thorfare, primary_thorfare, locality))
+-- 5 Both sub_building_name and building number (very similar to 4, only line 1 differs)
+WHEN sub_building_name is not null AND building_number is not null and building_name is null 	
+	THEN concat(building_number, ' ', coalesce(secondary_thorfare, primary_thorfare, locality))
+-- 6a sub building and building name, no number - sub_building name matches exception criteria
+WHEN sub_building_name is not null and building_name is not null and building_number is null AND (length(sub_building_name) = 1 OR sub_building_name regexp '^[0-9]((.*)?[0-9])?([a-zA-Z])?$')		
+	THEN coalesce(secondary_thorfare, primary_thorfare, locality)
+-- 6b sub building and building name, no number 
+WHEN sub_building_name is not null and building_name is not null and building_number is null 	
+    THEN building_name
+-- 7a building name + sub building name (meets exception rule) + building number
+WHEN sub_building_name is not null and building_name is not null and building_number is not null AND (length(sub_building_name) = 1 OR sub_building_name regexp '^[0-9]((.*)?[0-9])?([a-zA-Z])?$')
+	THEN concat(building_number, ' ', coalesce(secondary_thorfare, primary_thorfare, locality))
+-- 7b building name + sub building name + building number
+WHEN sub_building_name is not null and building_name is not null and building_number is not null
+	THEN building_name
+END address_line2,
+CASE 
+-- 1 Based on org name           
+WHEN organisation_name IS NOT NULL AND building_name is null AND sub_building_name is null and building_number is null 		
+	THEN CASE 	WHEN secondary_thorfare IS NOT NULL THEN primary_thorfare
+							WHEN secondary_thorfare IS NULL AND primary_thorfare IS NOT NULL THEN locality END
+-- 2a building number only + secondary_thorfare
+WHEN building_number is not null AND building_name is null and sub_building_name is null and secondary_thorfare is not null
+    THEN locality
+-- 2b building number only + primary_thorfare     
+WHEN building_number is not null AND building_name is null and sub_building_name is null and primary_thorfare is not null
+    THEN null
+-- 2c building number only + locality and/or dependent locality
+WHEN building_number is not null AND building_name is null and sub_building_name is null 
+    THEN null
+-- 3a building name only + exception rule 
+WHEN sub_building_name is null and building_number is null and (length(building_name) = 1 OR building_name regexp '^[0-9]((.*)?[0-9])?([a-zA-Z])?$') 	
+	THEN CASE WHEN secondary_thorfare IS NOT NULL THEN locality END
+-- 3b building name only, no exception rule
+WHEN sub_building_name is null and building_number is null and building_name is not null	
+	THEN CASE 	WHEN secondary_thorfare IS NOT NULL THEN primary_thorfare 
+							WHEN secondary_thorfare is null and primary_thorfare IS NOT NULL THEN locality
+                            WHEN primary_thorfare IS NULL THEN locality END
+-- 4 Both building name and number
+WHEN building_number is not null and building_name is not null and sub_building_name is null	
+	THEN CASE 	WHEN secondary_thorfare IS NOT NULL THEN primary_thorfare
+							WHEN secondary_thorfare is null and primary_thorfare IS NOT NULL THEN locality
+							WHEN primary_thorfare IS NULL THEN locality END
+-- 5 Both sub_building_name and building number (very similar to 4, only line 1 differs)
+WHEN sub_building_name is not null AND building_number is not null and building_name is null 	
+	THEN CASE 	WHEN secondary_thorfare IS NOT NULL THEN primary_thorfare
+							WHEN secondary_thorfare is null and primary_thorfare IS NOT NULL THEN locality END
+-- 6a sub building and building name, no number - sub_building name matches exception criteria
+WHEN sub_building_name is not null and building_name is not null and building_number is null AND (length(sub_building_name) = 1 OR sub_building_name regexp '^[0-9]((.*)?[0-9])?([a-zA-Z])?$')		
+	THEN CASE 	WHEN secondary_thorfare IS NOT NULL THEN primary_thorfare 
+							WHEN secondary_thorfare is null and primary_thorfare IS NOT NULL THEN locality END
+-- 6b sub building and building name, no number 
+WHEN sub_building_name is not null and building_name is not null and building_number is null 	
+    THEN coalesce(secondary_thorfare, primary_thorfare, locality)
+-- 7a building name + sub building name (meets exception rule) + building number
+WHEN sub_building_name is not null and building_name is not null and building_number is not null AND (length(sub_building_name) = 1 OR sub_building_name regexp '^[0-9]((.*)?[0-9])?([a-zA-Z])?$')
+	THEN CASE 	WHEN secondary_thorfare IS NOT NULL THEN primary_thorfare 
+							WHEN secondary_thorfare is null and primary_thorfare IS NOT NULL THEN locality END
+-- 7b building name + sub building name + building number
+WHEN sub_building_name is not null and building_name is not null and building_number is not null
+	THEN concat(building_number, ' ', coalesce(secondary_thorfare, primary_thorfare, locality))
+END address_line3,
+CASE 
+-- 1 Based on org name           
+WHEN organisation_name IS NOT NULL AND building_name is null AND sub_building_name is null and building_number is null 		
+	THEN CASE WHEN secondary_thorfare IS NOT NULL THEN locality END
+-- 2a building number only + secondary_thorfare
+WHEN building_number is not null AND building_name is null and sub_building_name is null and secondary_thorfare is not null
+    THEN null
+-- 2b building number only + primary_thorfare     
+WHEN building_number is not null AND building_name is null and sub_building_name is null and primary_thorfare is not null
+    THEN null
+-- 2c building number only + locality and/or dependent locality
+WHEN building_number is not null AND building_name is null and sub_building_name is null 
+    THEN null
+-- 3a building name only + exception rule 
+WHEN sub_building_name is null and building_number is null and (length(building_name) = 1 OR building_name regexp '^[0-9]((.*)?[0-9])?([a-zA-Z])?$') 	
+	THEN null
+-- 3b building name only, no exception rule
+WHEN sub_building_name is null and building_number is null and building_name is not null	
+	THEN CASE 	WHEN secondary_thorfare IS NOT NULL THEN locality END
+-- 4 Both building name and number
+WHEN building_number is not null and building_name is not null and sub_building_name is null	
+	THEN CASE 	WHEN secondary_thorfare IS NOT NULL THEN locality END
+-- 5 Both sub_building_name and building number (very similar to 4, only line 1 differs)
+WHEN sub_building_name is not null AND building_number is not null and building_name is null 	
+	THEN CASE 	WHEN secondary_thorfare IS NOT NULL THEN locality END
+-- 6a sub building and building name, no number - sub_building name matches exception criteria
+WHEN sub_building_name is not null and building_name is not null and building_number is null AND (length(sub_building_name) = 1 OR sub_building_name regexp '^[0-9]((.*)?[0-9])?([a-zA-Z])?$')		
+	THEN CASE WHEN secondary_thorfare IS NOT NULL THEN locality END
+-- 6b sub building and building name, no number 
+WHEN sub_building_name is not null and building_name is not null and building_number is null 	
+    THEN CASE 	WHEN secondary_thorfare IS NOT NULL THEN primary_thorfare 
+							WHEN secondary_thorfare is null and primary_thorfare IS NOT NULL THEN locality END
+-- 7a building name + sub building name (meets exception rule) + building number
+WHEN sub_building_name is not null and building_name is not null and building_number is not null AND (length(sub_building_name) = 1 OR sub_building_name regexp '^[0-9]((.*)?[0-9])?([a-zA-Z])?$')
+	THEN null
+-- 7b building name + sub building name + building number
+WHEN sub_building_name is not null and building_name is not null and building_number is not null
+	THEN CASE 	WHEN secondary_thorfare IS NOT NULL THEN primary_thorfare 
+							WHEN secondary_thorfare is null and primary_thorfare IS NOT NULL THEN locality END
+END address_line4,
+  town
+, postcode
+, postcode_trim
+, organisation_name
+, local_council
+, uprn
+FROM address_ni where postcode_trim is not null 
+;
+

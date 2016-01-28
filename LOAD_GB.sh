@@ -17,7 +17,7 @@ fi
 
 
 mysql $connection addressbase < ./create_gb.sql
-
+mysql $connection addressbase -e "ALTER TABLE address_gb DISABLE KEYS;"
 for f in ./AddressBasePlus_FULL_*.csv
 do
  
@@ -28,3 +28,7 @@ do
   echo $(date '+%H:%M:%S') Finished "$f"
   
 done
+
+echo $(date '+%H:%M:%S') Enabling keys
+mysql $connection addressbase -e "ALTER TABLE address_gb ENABLE KEYS;"
+echo $(date '+%H:%M:%S') Keys enabled

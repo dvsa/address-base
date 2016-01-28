@@ -83,3 +83,238 @@ CREATE TABLE addressbase.`address_gb` (
  ,KEY `ix_address_gb_postcode_trim` (`postcode_trim`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8
 ;
+
+
+
+CREATE OR REPLACE VIEW gb_readable_vw AS
+/*
+
+Turn data from addressbase columns into human readable address.
+Ref: http://www.royalmail.com/sites/default/files/docs/pdf/programmers_guide_edition_7_v5.pdf
+The addressbase data has 2 sources. Local Authorities and Post Office (LA and PAF).
+There is not sufficient documentation on queying this data on internet.
+Additionally, the Northern Ireland (NI) data is received in the PAF format.
+Because of this the below query uses the PAF rules - mainly so that the 
+corresponding NI query is similar.  The LA columns in address_gb are agnored.
+It would be possibly to create the same readable address from either
+LA or PAF data.
+
+*/
+SELECT
+CASE 
+-- 1a Based on org name, have po box
+WHEN organisation_name IS NOT NULL AND po_box_number IS NOT NULL AND building_name is null AND sub_building_name is null and building_number is null 	
+    THEN gb.organisation_name
+-- 1b Based on org name, no po box           
+WHEN organisation_name IS NOT NULL AND po_box_number IS NULL AND building_name is null AND sub_building_name is null and building_number is null 		
+	THEN organisation_name
+-- 2a building number only + dependent_thoroughfare
+WHEN building_number is not null AND building_name is null and sub_building_name is null and dependent_thoroughfare is not null
+    THEN concat(building_number, ' ', dependent_thoroughfare)
+-- 2b building number only + thoroughfare     
+WHEN building_number is not null AND building_name is null and sub_building_name is null and thoroughfare is not null
+    THEN concat(building_number, ' ', thoroughfare)
+-- 2c building number only + locality and/or dependent locality
+WHEN building_number is not null AND building_name is null and sub_building_name is null 
+    THEN concat(building_number, ' ', coalesce(double_dependent_locality, dependent_locality))
+-- 3a building name only + exception rule 
+WHEN sub_building_name is null and building_number is null and (length(building_name) = 1 OR building_name regexp '^[0-9]((.*)?[0-9])?([a-zA-Z])?$') 	
+	THEN concat(building_name,' ',coalesce(dependent_thoroughfare,thoroughfare,double_dependent_locality,dependent_locality))
+-- 3b building name only, no exception rule
+WHEN sub_building_name is null and building_number is null and building_name is not null	
+	THEN building_name
+-- 4 Both building name and number
+WHEN building_number is not null and building_name is not null and sub_building_name is null	
+	THEN building_name
+-- 5 Both sub_building_name and building number (very similar to 4, only line 1 differs)
+WHEN sub_building_name is not null AND building_number is not null and building_name is null 	
+	THEN sub_building_name
+-- 6a sub building and building name, no number - sub_building name matches exception criteria
+WHEN sub_building_name is not null and building_name is not null and building_number is null AND (length(sub_building_name) = 1 OR sub_building_name regexp '^[0-9]((.*)?[0-9])?([a-zA-Z])?$')		
+	THEN concat(sub_building_name, ' ', building_name)
+-- 6b sub building and building name, no number 
+WHEN sub_building_name is not null and building_name is not null and building_number is null AND (length(building_name) = 1 OR building_name regexp '^[0-9]((.*)?[0-9])?([a-zA-Z])?$')			
+	THEN sub_building_name
+-- 6c sub building and building name, no number 
+WHEN sub_building_name is not null and building_name is not null and building_number is null 	
+    THEN sub_building_name
+-- 7a building name + sub building name (meets exception rule) + building number
+WHEN sub_building_name is not null and building_name is not null and building_number is not null AND (length(sub_building_name) = 1 OR sub_building_name regexp '^[0-9]((.*)?[0-9])?([a-zA-Z])?$')
+	THEN concat(sub_building_name, ' ', building_name)
+
+-- 7b building name + sub building name + building number
+WHEN sub_building_name is not null and building_name is not null and building_number is not null
+	THEN sub_building_name
+END address_line1
+,CASE 
+-- 1a Based on org name, have po box
+WHEN gb.organisation_name IS NOT NULL AND gb.po_box_number IS NOT NULL AND building_name is null AND sub_building_name is null and building_number is null 	
+    THEN concat('PO BOX ',po_box_number)
+-- 1b Based on org name, no po box           
+WHEN gb.organisation_name IS NOT NULL AND gb.po_box_number IS NULL AND building_name is null AND sub_building_name is null and building_number is null 		
+	THEN thoroughfare
+-- 2a building number only + dependent_thoroughfare
+WHEN building_number is not null AND building_name is null and sub_building_name is null and dependent_thoroughfare is not null
+    THEN coalesce(dependent_thoroughfare,thoroughfare,double_dependent_locality,dependent_locality)
+-- 2b building number only + thoroughfare     
+WHEN building_number is not null AND building_name is null and sub_building_name is null and thoroughfare is not null
+    THEN coalesce(double_dependent_locality,dependent_locality)
+-- 2c building number only + locality and/or dependent locality
+WHEN building_number is not null AND building_name is null and sub_building_name is null 
+    THEN CASE WHEN double_dependent_locality IS NOT NULL THEN dependent_locality END
+-- 3a building name only + exception rule 
+WHEN sub_building_name is null and building_number is null and (length(building_name) = 1 OR building_name regexp '^[0-9]((.*)?[0-9])?([a-zA-Z])?$') 	
+	THEN CASE 	WHEN dependent_thoroughfare IS NOT NULL THEN thoroughfare 
+							WHEN thoroughfare IS NOT NULL THEN coalesce(double_dependent_locality, dependent_locality) 
+                            WHEN double_dependent_locality IS NOT NULL THEN dependent_locality END
+-- 3b building name only, no exception rule
+WHEN sub_building_name is null and building_number is null and building_name is not null	
+	THEN coalesce(dependent_thoroughfare, thoroughfare, double_dependent_locality, dependent_locality)
+
+-- 4 Both building name and number
+WHEN building_number is not null and building_name is not null and sub_building_name is null	
+	THEN concat(building_number, ' ', coalesce(dependent_thoroughfare, thoroughfare, double_dependent_locality, dependent_locality))
+-- 5 Both sub_building_name and building number (very similar to 4, only line 1 differs)
+WHEN sub_building_name is not null AND building_number is not null and building_name is null 	
+	THEN concat(building_number, ' ', coalesce(dependent_thoroughfare, thoroughfare, double_dependent_locality, dependent_locality))
+-- 6a sub building and building name, no number - sub_building name matches exception criteria
+WHEN sub_building_name is not null and building_name is not null and building_number is null AND (length(sub_building_name) = 1 OR sub_building_name regexp '^[0-9]((.*)?[0-9])?([a-zA-Z])?$')		
+	THEN coalesce(dependent_thoroughfare, thoroughfare, double_dependent_locality, dependent_locality)
+-- 6b sub building and building name, no number 
+WHEN sub_building_name is not null and building_name is not null and building_number is null AND (length(building_name) = 1 OR building_name regexp '^[0-9]((.*)?[0-9])?([a-zA-Z])?$')			
+	THEN concat(building_name, ' ', coalesce(dependent_thoroughfare, thoroughfare, double_dependent_locality, dependent_locality))
+-- 6c sub building and building name, no number 
+WHEN sub_building_name is not null and building_name is not null and building_number is null 	
+    THEN building_name
+-- 7a building name + sub building name (meets exception rule) + building number
+WHEN sub_building_name is not null and building_name is not null and building_number is not null AND (length(sub_building_name) = 1 OR sub_building_name regexp '^[0-9]((.*)?[0-9])?([a-zA-Z])?$')
+	THEN concat(building_number, ' ', coalesce(dependent_thoroughfare, thoroughfare, double_dependent_locality, dependent_locality))
+
+-- 7b building name + sub building name + building number
+WHEN sub_building_name is not null and building_name is not null and building_number is not null
+	THEN building_name
+END address_line2,
+CASE 
+-- 1a Based on org name, have po box
+WHEN gb.organisation_name IS NOT NULL AND gb.po_box_number IS NOT NULL AND building_name is null AND sub_building_name is null and building_number is null 	
+    THEN coalesce(dependent_thoroughfare,thoroughfare,double_dependent_locality,dependent_locality)
+-- 1b Based on org name, no po box           
+WHEN gb.organisation_name IS NOT NULL AND gb.po_box_number IS NULL AND building_name is null AND sub_building_name is null and building_number is null 		
+	THEN CASE 	WHEN dependent_thoroughfare IS NOT NULL THEN thoroughfare
+							WHEN dependent_thoroughfare IS NULL AND thoroughfare IS NOT NULL THEN coalesce(double_dependent_locality,dependent_locality)
+                            WHEN dependent_thoroughfare IS NULL AND thoroughfare IS NULL AND double_dependent_locality IS NOT NULL THEN dependent_locality END
+-- 2a building number only + dependent_thoroughfare
+WHEN building_number is not null AND building_name is null and sub_building_name is null and dependent_thoroughfare is not null
+    THEN coalesce(double_dependent_locality,dependent_locality)
+-- 2b building number only + thoroughfare     
+WHEN building_number is not null AND building_name is null and sub_building_name is null and thoroughfare is not null
+    THEN CASE WHEN double_dependent_locality IS NOT NULL THEN dependent_locality END
+-- 2c building number only + locality and/or dependent locality
+WHEN building_number is not null AND building_name is null and sub_building_name is null 
+    THEN null
+-- 3a building name only + exception rule 
+WHEN sub_building_name is null and building_number is null and (length(building_name) = 1 OR building_name regexp '^[0-9]((.*)?[0-9])?([a-zA-Z])?$') 	
+	THEN CASE WHEN dependent_thoroughfare IS NOT NULL THEN coalesce(double_dependent_locality, dependent_locality)
+							WHEN dependent_thoroughfare is null and thoroughfare is not null and double_dependent_locality is not null THEN dependent_locality END
+-- 3b building name only, no exception rule
+WHEN sub_building_name is null and building_number is null and building_name is not null	
+	THEN CASE 	WHEN dependent_thoroughfare IS NOT NULL THEN thoroughfare 
+							WHEN dependent_thoroughfare is null and thoroughfare IS NOT NULL THEN coalesce(double_dependent_locality, dependent_locality)
+                            WHEN thoroughfare IS NULL AND double_dependent_locality IS NOT NULL THEN dependent_locality END
+-- 4 Both building name and number
+WHEN building_number is not null and building_name is not null and sub_building_name is null	
+	THEN CASE 	WHEN dependent_thoroughfare IS NOT NULL THEN thoroughfare
+							WHEN dependent_thoroughfare is null and thoroughfare IS NOT NULL THEN coalesce(double_dependent_locality, dependent_locality)
+							WHEN thoroughfare IS NULL AND double_dependent_locality IS NOT NULL THEN dependent_locality END
+-- 5 Both sub_building_name and building number (very similar to 4, only line 1 differs)
+WHEN sub_building_name is not null AND building_number is not null and building_name is null 	
+	THEN CASE 	WHEN dependent_thoroughfare IS NOT NULL THEN thoroughfare
+							WHEN dependent_thoroughfare is null and thoroughfare IS NOT NULL THEN coalesce(double_dependent_locality, dependent_locality)
+							WHEN thoroughfare IS NULL AND double_dependent_locality IS NOT NULL THEN dependent_locality END
+-- 6a sub building and building name, no number - sub_building name matches exception criteria
+WHEN sub_building_name is not null and building_name is not null and building_number is null AND (length(sub_building_name) = 1 OR sub_building_name regexp '^[0-9]((.*)?[0-9])?([a-zA-Z])?$')		
+	THEN  CASE 	WHEN dependent_thoroughfare IS NOT NULL THEN thoroughfare 
+							WHEN dependent_thoroughfare is null and thoroughfare IS NOT NULL THEN coalesce(double_dependent_locality, dependent_locality)
+                            WHEN thoroughfare IS NULL AND double_dependent_locality IS NOT NULL THEN dependent_locality END
+-- 6b sub building and building name, no number 
+WHEN sub_building_name is not null and building_name is not null and building_number is null AND (length(building_name) = 1 OR building_name regexp '^[0-9]((.*)?[0-9])?([a-zA-Z])?$')			
+	THEN CASE 	WHEN dependent_thoroughfare IS NOT NULL THEN thoroughfare 
+							WHEN thoroughfare IS NOT NULL THEN coalesce(double_dependent_locality, dependent_locality)
+                            WHEN thoroughfare IS NULL AND double_dependent_locality IS NOT NULL THEN dependent_locality END
+-- 6c sub building and building name, no number 
+WHEN sub_building_name is not null and building_name is not null and building_number is null 	
+    THEN coalesce(dependent_thoroughfare, thoroughfare, double_dependent_locality, dependent_locality)
+-- 7a building name + sub building name (meets exception rule) + building number
+WHEN sub_building_name is not null and building_name is not null and building_number is not null AND (length(sub_building_name) = 1 OR sub_building_name regexp '^[0-9]((.*)?[0-9])?([a-zA-Z])?$')
+	THEN CASE 	WHEN dependent_thoroughfare IS NOT NULL THEN thoroughfare 
+							WHEN dependent_thoroughfare is null and thoroughfare IS NOT NULL THEN coalesce(double_dependent_locality, dependent_locality)
+							WHEN thoroughfare IS NULL AND double_dependent_locality IS NOT NULL THEN dependent_locality END
+-- 7b building name + sub building name + building number
+WHEN sub_building_name is not null and building_name is not null and building_number is not null
+	THEN concat(building_number, ' ', coalesce(dependent_thoroughfare, thoroughfare, double_dependent_locality, dependent_locality))
+END address_line3,
+CASE 
+-- 1a Based on org name, have po box
+WHEN gb.organisation_name IS NOT NULL AND gb.po_box_number IS NOT NULL AND building_name is null AND sub_building_name is null and building_number is null 	
+    THEN CASE 	WHEN dependent_thoroughfare IS NOT NULL THEN thoroughfare
+							WHEN dependent_thoroughfare IS NULL AND thoroughfare IS NOT NULL THEN coalesce(double_dependent_locality,dependent_locality)
+                            WHEN dependent_thoroughfare IS NULL AND thoroughfare IS NULL AND double_dependent_locality IS NOT NULL THEN dependent_locality END
+-- 1b Based on org name, no po box           
+WHEN gb.organisation_name IS NOT NULL AND gb.po_box_number IS NULL AND building_name is null AND sub_building_name is null and building_number is null 		
+	THEN null
+-- 2a building number only + dependent_thoroughfare
+WHEN building_number is not null AND building_name is null and sub_building_name is null and dependent_thoroughfare is not null
+    THEN CASE WHEN double_dependent_locality IS NULL THEN dependent_locality END
+-- 2b building number only + thoroughfare     
+WHEN building_number is not null AND building_name is null and sub_building_name is null and thoroughfare is not null
+    THEN null
+-- 2c building number only + locality and/or dependent locality
+WHEN building_number is not null AND building_name is null and sub_building_name is null 
+    THEN null
+-- 3a building name only + exception rule 
+WHEN sub_building_name is null and building_number is null and (length(building_name) = 1 OR building_name regexp '^[0-9]((.*)?[0-9])?([a-zA-Z])?$') 	
+	THEN null
+-- 3b building name only, no exception rule
+WHEN sub_building_name is null and building_number is null and building_name is not null	
+	THEN CASE 	WHEN dependent_thoroughfare IS NOT NULL THEN coalesce(double_dependent_locality, dependent_locality)
+							WHEN dependent_thoroughfare is null and thoroughfare IS NOT NULL AND double_dependent_locality IS NOT NULL THEN dependent_locality END
+
+-- 4 Both building name and number
+WHEN building_number is not null and building_name is not null and sub_building_name is null	
+	THEN CASE 	WHEN dependent_thoroughfare IS NOT NULL THEN coalesce(double_dependent_locality, dependent_locality)
+							WHEN dependent_thoroughfare is null and thoroughfare IS NOT NULL AND double_dependent_locality IS NOT NULL THEN dependent_locality END
+-- 5 Both sub_building_name and building number (very similar to 4, only line 1 differs)
+WHEN sub_building_name is not null AND building_number is not null and building_name is null 	
+	THEN CASE 	WHEN dependent_thoroughfare IS NOT NULL THEN coalesce(double_dependent_locality, dependent_locality)
+							WHEN dependent_thoroughfare is null and thoroughfare IS NOT NULL AND double_dependent_locality IS NOT NULL THEN dependent_locality END
+-- 6a sub building and building name, no number - sub_building name matches exception criteria
+WHEN sub_building_name is not null and building_name is not null and building_number is null AND (length(sub_building_name) = 1 OR sub_building_name regexp '^[0-9]((.*)?[0-9])?([a-zA-Z])?$')		
+	THEN CASE WHEN dependent_thoroughfare IS NOT NULL THEN coalesce(double_dependent_locality, dependent_locality)
+							WHEN dependent_thoroughfare is null and thoroughfare IS NOT NULL AND double_dependent_locality IS NOT NULL THEN dependent_locality END
+-- 6b sub building and building name, no number 
+WHEN sub_building_name is not null and building_name is not null and building_number is null AND (length(building_name) = 1 OR building_name regexp '^[0-9]((.*)?[0-9])?([a-zA-Z])?$')			
+	THEN CASE 	WHEN dependent_thoroughfare IS NOT NULL THEN coalesce(double_dependent_locality, dependent_locality)
+							WHEN thoroughfare IS NULL AND double_dependent_locality IS NOT NULL THEN dependent_locality END
+-- 6c sub building and building name, no number 
+WHEN sub_building_name is not null and building_name is not null and building_number is null 	
+    THEN CASE 	WHEN dependent_thoroughfare IS NOT NULL THEN thoroughfare 
+							WHEN dependent_thoroughfare is null and thoroughfare IS NOT NULL THEN coalesce(double_dependent_locality, dependent_locality)
+                            WHEN thoroughfare IS NULL AND double_dependent_locality IS NOT NULL THEN dependent_locality END
+-- 7a building name + sub building name (meets exception rule) + building number
+WHEN sub_building_name is not null and building_name is not null and building_number is not null AND (length(sub_building_name) = 1 OR sub_building_name regexp '^[0-9]((.*)?[0-9])?([a-zA-Z])?$')
+	THEN CASE 	WHEN dependent_thoroughfare IS NOT NULL THEN coalesce(double_dependent_locality, dependent_locality)
+							WHEN dependent_thoroughfare is null and thoroughfare IS NOT NULL AND double_dependent_locality IS NOT NULL THEN dependent_locality END
+-- 7b building name + sub building name + building number
+WHEN sub_building_name is not null and building_name is not null and building_number is not null
+	THEN CASE 	WHEN dependent_thoroughfare IS NOT NULL THEN thoroughfare 
+							WHEN dependent_thoroughfare is null and thoroughfare IS NOT NULL THEN coalesce(double_dependent_locality, dependent_locality)
+							WHEN thoroughfare IS NULL AND double_dependent_locality IS NOT NULL THEN dependent_locality END
+END address_line4
+, post_town
+, postcode
+, postcode_trim
+, organisation_name
+, administritive_area
+, uprn
+FROM address_gb gb where postcode_trim is not null 
+;
