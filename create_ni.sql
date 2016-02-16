@@ -200,8 +200,8 @@ WHEN sub_building_name is not null and building_name is not null and building_nu
 WHEN sub_building_name is not null and building_name is not null and building_number is not null
 	THEN CASE 	WHEN secondary_thorfare IS NOT NULL THEN primary_thorfare 
 							WHEN secondary_thorfare is null and primary_thorfare IS NOT NULL THEN locality END
-END address_line4,
-  town
+END address_line4
+, posttown
 , postcode
 , postcode_trim
 , organisation_name
