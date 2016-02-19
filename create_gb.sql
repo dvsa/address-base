@@ -25,13 +25,13 @@ CREATE TABLE addressbase.`address_gb` (
  ,`building_name`        VARCHAR(50) DEFAULT NULL          COMMENT 'e.g. Hillcrest House'
  ,`building_number`      INT UNSIGNED DEFAULT NULL         COMMENT 'building number if numeric'
  ,`sao_start_number`     SMALLINT UNSIGNED DEFAULT NULL COMMENT 'No of the secondary addressable obj, or the start of range'
- ,`sao_start_prefix`     VARCHAR(2) DEFAULT NULL           COMMENT 'The suffix to the SAO_START_NUMBER'
+ ,`sao_start_suffix`     VARCHAR(2) DEFAULT NULL           COMMENT 'The suffix to the SAO_START_NUMBER'
  ,`sao_end_number`       SMALLINT UNSIGNED DEFAULT NULL COMMENT 'End number range for the SAO where SAO_START_NUMBER not null'
  ,`sao_end_suffix`       VARCHAR(2) DEFAULT NULL           COMMENT 'Suffix for end number'
  ,`sao_text`             VARCHAR(90) DEFAULT NULL          COMMENT 'Describes the SAO, such as Maisonette'
  ,`alt_language_sao_text` VARCHAR(90) DEFAULT NULL         COMMENT 'Describes the SAO, such as Maisonette in specified language'
  ,`pao_start_number`     SMALLINT(6) DEFAULT NULL       COMMENT 'No of the primary addressable obj, or the start of range'
- ,`pao_start_prefix`     VARCHAR(2) DEFAULT NULL           COMMENT 'The suffix to the PAO_START_NUMBER'
+ ,`pao_start_suffix`     VARCHAR(2) DEFAULT NULL           COMMENT 'The suffix to the PAO_START_NUMBER'
  ,`pao_end_number`       SMALLINT(6) DEFAULT NULL       COMMENT 'End number range for the SAO where PAO_START_NUMBER not null'
  ,`pao_end_suffix`       VARCHAR(2) DEFAULT NULL           COMMENT 'Suffix for end number'
  ,`pao_text`             VARCHAR(90) DEFAULT NULL          COMMENT 'Describes the SAO, such as Maisonette'
@@ -78,13 +78,64 @@ CREATE TABLE addressbase.`address_gb` (
  ,`voa_ndr_scat_code`    VARCHAR(4) DEFAULT NULL           COMMENT 'non domestic rates special cat code'
  ,`alt_language`         VARCHAR(3) DEFAULT NULL           COMMENT 'Alt language for fields using one'
  ,`postcode_trim`        VARCHAR(7) DEFAULT NULL           COMMENT 'Postcode with no whitespace for searching'
- 
- ,PRIMARY KEY address_gb_pk (uprn)
+ ,PRIMARY KEY address_gb_pk(uprn)
  ,KEY `ix_address_gb_postcode_trim` (`postcode_trim`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8
 ;
 
+DELIMITER $$
+DROP FUNCTION IF EXISTS gb_address_concat$$
+CREATE FUNCTION gb_address_concat(p_uprn BIGINT UNSIGNED) 
+RETURNS VARCHAR(500) CHARSET utf8 DETERMINISTIC READS SQL DATA
+BEGIN
+  DECLARE result VARCHAR(500);
 
+SELECT 
+    CASE
+        WHEN
+            addressbase_postal IN ('C' , 'L')
+        THEN
+            CONCAT_WS('|',
+                    sao_text,
+                    CASE
+                        WHEN
+                            sao_start_number IS NOT NULL
+                                OR pao_text IS NOT NULL
+                        THEN
+                            CONCAT(CONCAT_WS('', sao_start_number, sao_start_suffix),
+                                    CASE
+                                        WHEN sao_end_number IS NOT NULL THEN '-'
+                                        ELSE ''
+                                    END,
+                                    CONCAT_WS('',
+                                            sao_end_number,
+                                            sao_end_suffix,
+                                            ' ',
+                                            pao_text))
+                        ELSE NULL
+                    END,
+                    CONCAT(CONCAT_WS('',
+                                    '',
+                                    pao_start_number,
+                                    pao_start_suffix),
+                            CASE
+                                WHEN pao_end_number IS NOT NULL THEN '-'
+                                ELSE ''
+                            END,
+                            CONCAT_WS('', '', pao_end_number, pao_end_suffix),
+                            ' ',
+                            street_description))
+        WHEN addressbase_postal = 'D' THEN NULL
+    END
+INTO result FROM
+    address_gb
+WHERE
+    uprn = p_uprn;
+  RETURN result;
+
+END$$
+
+DELIMITER ;
 
 CREATE OR REPLACE VIEW gb_readable_vw AS
 /*
@@ -95,13 +146,14 @@ The addressbase data has 2 sources. Local Authorities and Post Office (LA and PA
 There is not sufficient documentation on queying this data on internet.
 Additionally, the Northern Ireland (NI) data is received in the PAF format.
 Because of this the below query uses the PAF rules - mainly so that the 
-corresponding NI query is similar.  The LA columns in address_gb are agnored.
-It would be possibly to create the same readable address from either
-LA or PAF data.
-
+corresponding NI query is similar.  
+If its not a PAF record then call a function to get data in | separated
+column order.  The rules are simpler than the PAF version.
 */
 SELECT
 CASE 
+WHEN addressbase_postal in ('C','L')
+    THEN substring_index(gb_address_concat(uprn),'|',1)
 -- 1a Based on org name, have po box
 WHEN organisation_name IS NOT NULL AND po_box_number IS NOT NULL AND building_name is null AND sub_building_name is null and building_number is null 	
     THEN gb.organisation_name
@@ -147,6 +199,9 @@ WHEN sub_building_name is not null and building_name is not null and building_nu
 	THEN sub_building_name
 END address_line1
 ,CASE 
+WHEN addressbase_postal in ('C','L') AND length(gb_address_concat(uprn)) - length(replace(gb_address_concat(uprn), '|' , ''))+ 1 > 1 THEN
+	substring_index(substring_index(gb_address_concat(uprn),'|',2),'|',-1)
+WHEN addressbase_postal in ('C','L') THEN NULL
 -- 1a Based on org name, have po box
 WHEN gb.organisation_name IS NOT NULL AND gb.po_box_number IS NOT NULL AND building_name is null AND sub_building_name is null and building_number is null 	
     THEN concat('PO BOX ',po_box_number)
@@ -194,7 +249,11 @@ WHEN sub_building_name is not null and building_name is not null and building_nu
 WHEN sub_building_name is not null and building_name is not null and building_number is not null
 	THEN building_name
 END address_line2,
-CASE 
+
+CASE
+WHEN addressbase_postal in ('C','L') AND length(gb_address_concat(uprn)) - length(replace(gb_address_concat(uprn), '|' , ''))+ 1 > 2 THEN
+	substring_index(substring_index(gb_address_concat(uprn),'|',3),'|',-1)
+WHEN addressbase_postal in ('C','L') THEN NULL 
 -- 1a Based on org name, have po box
 WHEN gb.organisation_name IS NOT NULL AND gb.po_box_number IS NOT NULL AND building_name is null AND sub_building_name is null and building_number is null 	
     THEN coalesce(dependent_thoroughfare,thoroughfare,double_dependent_locality,dependent_locality)
@@ -253,7 +312,10 @@ WHEN sub_building_name is not null and building_name is not null and building_nu
 WHEN sub_building_name is not null and building_name is not null and building_number is not null
 	THEN concat(building_number, ' ', coalesce(dependent_thoroughfare, thoroughfare, double_dependent_locality, dependent_locality))
 END address_line3,
-CASE 
+CASE
+WHEN addressbase_postal in ('C','L') AND length(gb_address_concat(uprn)) - length(replace(gb_address_concat(uprn), '|' , ''))+ 1 > 3 THEN
+	substring_index(substring_index(gb_address_concat(uprn),'|',4),'|',-1)
+WHEN addressbase_postal in ('C','L') THEN NULL  
 -- 1a Based on org name, have po box
 WHEN gb.organisation_name IS NOT NULL AND gb.po_box_number IS NOT NULL AND building_name is null AND sub_building_name is null and building_number is null 	
     THEN CASE 	WHEN dependent_thoroughfare IS NOT NULL THEN thoroughfare
@@ -310,11 +372,11 @@ WHEN sub_building_name is not null and building_name is not null and building_nu
 							WHEN dependent_thoroughfare is null and thoroughfare IS NOT NULL THEN coalesce(double_dependent_locality, dependent_locality)
 							WHEN thoroughfare IS NULL AND double_dependent_locality IS NOT NULL THEN dependent_locality END
 END address_line4
-, post_town
-, postcode
+, coalesce(post_town,town_name) town
+, postcode_locator postcode
 , postcode_trim
 , organisation_name
 , administritive_area
 , uprn
-FROM address_gb gb where postcode_trim is not null 
+FROM address_gb gb where postcode_trim is not null AND addressbase_postal IN ('C','L','D')
 ;

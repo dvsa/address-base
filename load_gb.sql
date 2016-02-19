@@ -28,13 +28,13 @@ uprn
 ,@building_name
 ,@building_number
 ,@sao_start_number
-,@sao_start_prefix
+,@sao_start_suffix
 ,@sao_end_number
 ,@sao_end_suffix
 ,@sao_text
 ,@alt_language_sao_text
 ,@pao_start_number
-,@pao_start_prefix
+,@pao_start_suffix
 ,@pao_end_number
 ,@pao_end_suffix
 ,@pao_text
@@ -94,13 +94,13 @@ udprn = nullif(@udprn, '')
 ,building_name = nullif(@building_name, '')
 ,building_number = nullif(@building_number, '')
 ,sao_start_number = nullif(@sao_start_number, '')
-,sao_start_prefix = nullif(@sao_start_prefix, '')
+,sao_start_suffix = nullif(@sao_start_suffix, '')
 ,sao_end_number = nullif(@sao_end_number, '')
 ,sao_end_suffix = nullif(@sao_end_suffix, '')
 ,sao_text = nullif(@sao_text, '')
 ,alt_language_sao_text = nullif(@alt_language_sao_text, '')
 ,pao_start_number = nullif(@pao_start_number, '')
-,pao_start_prefix = nullif(@pao_start_prefix, '')
+,pao_start_suffix = nullif(@pao_start_suffix, '')
 ,pao_end_number = nullif(@pao_end_number, '')
 ,pao_end_suffix = nullif(@pao_end_suffix, '')
 ,pao_text = nullif(@pao_text, '')
@@ -141,7 +141,7 @@ udprn = nullif(@udprn, '')
 ,voa_ndr_p_desc_code = nullif(@voa_ndr_p_desc_code, '')
 ,voa_ndr_scat_code = nullif(@voa_ndr_scat_code, '')
 ,alt_language = nullif(@alt_language, '')
-,postcode_trim = nullif(REPLACE(@postcode, ' ', ''), '')
+,postcode_trim = nullif(REPLACE(@postcode_locator, ' ', ''), '')
  ;
  
  SELECT row_count() rows_inserted;
