@@ -372,7 +372,7 @@ WHEN sub_building_name is not null and building_name is not null and building_nu
 							WHEN dependent_thoroughfare is null and thoroughfare IS NOT NULL THEN coalesce(double_dependent_locality, dependent_locality)
 							WHEN thoroughfare IS NULL AND double_dependent_locality IS NOT NULL THEN dependent_locality END
 END address_line4
-, coalesce(post_town,town_name) town
+, coalesce(post_town,town_name) post_town
 , postcode_locator postcode
 , postcode_trim
 , organisation_name
