@@ -1,8 +1,16 @@
+-- noinspection SqlResolveForFile
 SET UNIQUE_CHECKS = 0;
 
-LOAD DATA LOCAL INFILE 'GB_CSV_FILE_NAME'
-REPLACE INTO TABLE addressbase.address_gb FIELDS TERMINATED by ','
-OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"' LINES TERMINATED BY '\r\n' (
+LOAD DATA LOCAL
+    INFILE 'GB_CSV_FILE_NAME'
+    REPLACE
+    INTO TABLE address_gb
+    FIELDS
+        TERMINATED by ','
+        OPTIONALLY ENCLOSED BY '"' ESCAPED BY '"'
+    LINES
+        TERMINATED BY '\r\n'
+(
 uprn
 ,@rdprn
 ,change_type
@@ -142,6 +150,6 @@ udprn = nullif(@udprn, '')
 ,voa_ndr_scat_code = nullif(@voa_ndr_scat_code, '')
 ,alt_language = nullif(@alt_language, '')
 ,postcode_trim = nullif(REPLACE(@postcode_locator, ' ', ''), '')
- ;
- 
- SELECT row_count() rows_inserted;
+;
+
+SELECT row_count() as 'added rows';

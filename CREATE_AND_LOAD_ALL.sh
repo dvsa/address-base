@@ -17,7 +17,11 @@ fi
 
 echo Creating Schema
 mysql $connection addressbase < ./create_schema.sql
+
+echo
 echo Creating and loading NI table
 ./LOAD_NI.sh "$connection"
+
+echo
 echo Creating and loading GB table
 ./LOAD_GB.sh "$connection"
