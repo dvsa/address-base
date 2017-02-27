@@ -12,7 +12,7 @@ CREATE TABLE `address_ni` (
 ,`town`              VARCHAR(40) DEFAULT NULL         COMMENT 'Either locality or town or both required'
 ,`county`            VARCHAR(40) NOT NULL
 ,`postcode`          VARCHAR(8)  DEFAULT NULL
-,`blpu`              BIGINT UNSIGNED DEFAULT NULL    COMMENT 'Basic Land and Property Unit' 
+,`blpu`              BIGINT UNSIGNED DEFAULT NULL    COMMENT 'Basic Land and Property Unit'
 ,`unique_building_id` BIGINT UNSIGNED NOT NULL       COMMENT 'Identifies Primary Addressable Object.'
 ,`uprn`              BIGINT UNSIGNED NOT NULL        COMMENT 'Unique address id across NI and GB data'
 ,`usrn`              INT UNSIGNED NOT NULL           COMMENT 'Unique streen id'
@@ -139,7 +139,7 @@ WHEN sub_building_name is null and building_number is null and (length(building_
 WHEN sub_building_name is null and building_number is null and building_name is not null
 	THEN CASE 	WHEN secondary_thorfare IS NOT NULL THEN primary_thorfare
 							WHEN secondary_thorfare is null and primary_thorfare IS NOT NULL THEN coalesce(townland, locality)
-                            WHEN primary_thorfare IS NULL AND townland IS NOT NULL THEN locality END                            
+                            WHEN primary_thorfare IS NULL AND townland IS NOT NULL THEN locality END
 -- 4 Both building name and number
 WHEN building_number is not null and building_name is not null and sub_building_name is null
 	THEN CASE 	WHEN secondary_thorfare IS NOT NULL THEN primary_thorfare
@@ -163,7 +163,7 @@ WHEN sub_building_name is not null and building_name is not null and building_nu
 -- 7a building name + sub building name (meets exception rule) + building number
 WHEN sub_building_name is not null and building_name is not null and building_number is not null AND (length(sub_building_name) = 1 OR sub_building_name regexp '^[0-9]((.*)?[0-9])?([a-zA-Z])?$')
 	THEN CASE 	WHEN secondary_thorfare IS NOT NULL THEN primary_thorfare
-							WHEN secondary_thorfare is null and primary_thorfare IS NOT NULL THEN coalesce(townland, locality) 
+							WHEN secondary_thorfare is null and primary_thorfare IS NOT NULL THEN coalesce(townland, locality)
 							WHEN primary_thorfare IS NULL AND townland IS NOT NULL THEN locality END
 -- 7b building name + sub building name + building number
 WHEN sub_building_name is not null and building_name is not null and building_number is not null

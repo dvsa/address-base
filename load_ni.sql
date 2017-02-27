@@ -1,18 +1,9 @@
 -- noinspection SqlResolveForFile
 SET UNIQUE_CHECKS = 0;
 
-LOAD DATA LOCAL
-    INFILE 'NI_CSV_FILE_NAME'
-    REPLACE
-    INTO TABLE address_ni
-    CHARACTER SET latin1
-    FIELDS
-        TERMINATED by ','
-        OPTIONALLY ENCLOSED BY '"'
-    LINES
-        TERMINATED BY '\n'
-    IGNORE 1 LINES
-(
+LOAD DATA LOCAL INFILE 'ni.csv'
+REPLACE INTO TABLE address_ni CHARACTER SET latin1 FIELDS TERMINATED by ','
+OPTIONALLY ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1 LINES(
  @organisation_name
 ,@sub_building_name
 ,@building_name
