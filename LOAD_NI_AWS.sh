@@ -6,6 +6,8 @@ echo $1;
 exit 1;
 }
 
+source /tmp/s3assume.sh "arn:aws:iam::054614622558:role/ADDRESS-ProdToDev-AssumeRole"
+
 # Check can connect
 result=$(mysql -e "exit"  2>&1) || log "Cannot connect to database: $result"
 
@@ -20,7 +22,7 @@ result=$(mysql -e "ALTER TABLE address_ni DISABLE KEYS;" 2>&1) || log "DISABLE K
 f=ALLNI_${niversion}_F.zip
 
 echo $(date '+%H:%M:%S') Downloading "$f"
-s3cmd get -f ${s3}${f} || log "Failed to downoad ${f} from ${s3}"
+ /usr/local/bin/aws s3 cp ${s3}${f} . || log "Failed to downoad ${f} from ${s3}"
 
 echo $(date '+%H:%M:%S') Unpacking "$f"
 unzip -p $f ALLNI_${niversion}_F.csv > ni.csv || log "Failed to unzip ${f}"

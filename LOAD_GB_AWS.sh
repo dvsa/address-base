@@ -6,6 +6,8 @@ echo $1;
 exit 1;
 }
 
+source /tmp/s3assume.sh "arn:aws:iam::054614622558:role/ADDRESS-ProdToDev-AssumeRole"
+
 # Check can connect
 result=$(mysql -e "exit"  2>&1)|| log "Cannot connect to database: $result"
 
@@ -17,20 +19,22 @@ result=$(mysql < ./create_gb.sql 2>&1) || log "Failed to run create_gb.sql: $res
 
 result=$(mysql -e "ALTER TABLE address_gb DISABLE KEYS;" 2>&1) || log "DISABLE KEYS Failed: $result"
 
-result=$(s3cmd ls ${s3}AddressBasePlus_FULL_${addressbaseversion}_* 2>&1) || log "Failed to list files from ${s3}: $result"
+result=$(/usr/local/bin/aws s3 ls ${s3}| grep csv.zip 2>&1) || log "Failed to list files from ${s3}: $result"
 
-files=( $(s3cmd ls ${s3}AddressBasePlus_FULL_${addressbaseversion}_*|cut -d'/' -f5) ) || log "Failed to extract file names"
+files=( $(/usr/local/bin/aws s3 ls ${s3} | grep csv.zip | cut -d' ' -f5 2>&1)) || log "Failed to extract file names"
 
 [ ${#files[@]} -gt 0 ] || log "No Files Found!"
 
 for f in ${files[*]}
 do
+  echo "file:"
+  echo $f
   echo $(date '+%H:%M:%S') Downloading "$f"
-  s3cmd get -f ${s3}${f} || log "Failed to download ${f} from ${s3}"
-  
+  /usr/local/bin/aws s3 cp ${s3}${f} . || log "Failed to download ${f} from ${s3}"
+
   echo $(date '+%H:%M:%S') Unpacking "$f"
   unzip -p $f > gb_csv || log "Failed to unzip ${f}"
-  
+
   echo $(date '+%H:%M:%S') Loading "$f"
   result=$(mysql --show_warnings < ./load_gb.sql 2>&1) || log "Failed to load load_gb.sql: $result"
 
