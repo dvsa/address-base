@@ -27,6 +27,9 @@ files=( $(/usr/local/bin/aws s3 ls ${s3} | grep csv.zip | cut -d' ' -f5 2>&1)) |
 
 for f in ${files[*]}
 do
+  #grab fresh key to protect from 1 hour timeout
+  source /tmp/s3assume.sh "arn:aws:iam::054614622558:role/ADDRESS-ProdToDev-AssumeRole"
+  
   echo "file:"
   echo $f
   echo $(date '+%H:%M:%S') Downloading "$f"
